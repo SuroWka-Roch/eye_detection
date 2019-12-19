@@ -26,9 +26,9 @@ def save_files(small, big, name_small="small.png", name_big="big.png"):
     cv.imwrite("./output/{}".format(name_big), big)
 
 
-def read_files(name_small="small.png", name_big="big.png"):
-    small = cv.imread("./output/{}".format(name_small))
-    big = cv.imread("./output/{}".format(name_big))
+def read_files(name_small="./output/small.png", name_big="./output/big.png"):
+    small = cv.imread(name_small)
+    big = cv.imread(name_big)
 
     big = cv.cvtColor(big, cv.COLOR_BGR2GRAY)
     small = cv.cvtColor(small, cv.COLOR_BGR2GRAY)

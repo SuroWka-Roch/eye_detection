@@ -14,7 +14,12 @@ parser = argparse.ArgumentParser(description='Preprepare the eye biometry')
 parser.add_argument(
     '--binary', '-b', help="Only generate binary files into output folder", action="store_true")
 parser.add_argument('--file', '-f', help="Choose file to do the thing with")
-parser.add_argument('--output', '-o', help="Choose file name for output", default="out.png")
+parser.add_argument(
+    '--output', '-o', help="Choose file name for output", default="./output/out.png")
+parser.add_argument('--iris', '-i', help="binary file of iris",
+                    default="./gimp_out/small.png")
+parser.add_argument('--eye', '-e', help="binary file of eye",
+                    default="./gimp_out/big.png")
 
 
 args = parser.parse_args()
@@ -32,6 +37,8 @@ if not os.path.isfile(FILE_NAME):
     else:
         pic = cv.imread("./fig/{}".format(FILE_NAME))
 
+if not os.path.isfile(args.iris) or not os.path.isfile(args.eye):
+    raise(FileNotFoundError)
 
 if args.binary:
     print("Generating Binary files")
@@ -45,17 +52,17 @@ except Exception as e:
     print(e)
 
 
-male, duze = binary_eye.read_files()
+male, duze = binary_eye.read_files(name_small=args.iris, name_big=args.eye)
+
+male = circles.fill_holes(male)
+duze = circles.fill_holes(duze)
 
 circles.show_circles(pic, circles.find_circles(male))
 circles.show_circles(pic, circles.find_circles(duze))
 
-
 cv.imshow("lol", pic)
 cv.imshow("lol2", male)
 cv.imshow("lol3", duze)
-
-
-cv.imwrite(args.output,pic)
-
 cv.waitKey()
+
+cv.imwrite(args.output, pic)
