@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(description='Preprepare the eye biometry')
 parser.add_argument(
     '--binary', '-b', help="Only generate binary files into output folder", action="store_true")
 parser.add_argument('--file', '-f', help="Choose file to do the thing with")
+parser.add_argument('--output', '-o', help="Choose file name for output", default="out.png")
 
 
 args = parser.parse_args()
@@ -54,5 +55,7 @@ cv.imshow("lol", pic)
 cv.imshow("lol2", male)
 cv.imshow("lol3", duze)
 
+
+cv.imwrite(args.output,pic)
 
 cv.waitKey()
