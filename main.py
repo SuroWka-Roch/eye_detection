@@ -1,27 +1,41 @@
 #!/usr/bin/env python3.7
 import cv2 as cv
 import argparse
+import os.path
 
 import circles
 import binary_eye
 
-FILE_NAME = "./fig/01.png"
 
 print("helllo darknes my old friend.....")
 
 
 parser = argparse.ArgumentParser(description='Preprepare the eye biometry')
-parser.add_argument( '--binary','-b',help="Only generate binary files into output folder",action="store_true")
+parser.add_argument(
+    '--binary', '-b', help="Only generate binary files into output folder", action="store_true")
+parser.add_argument('--file', '-f', help="Choose file to do the thing with")
+
 
 args = parser.parse_args()
 
+if args.file:
+    FILE_NAME = args.file
+else:
+    FILE_NAME = "./fig/01.png"
+
+#handle oppening the file
 pic = cv.imread(FILE_NAME)
+if not os.path.isfile(FILE_NAME):
+    if not os.path.isfile("./fig/{}".format(FILE_NAME)):
+        raise(FileNotFoundError)
+    else:
+        pic = cv.imread("./fig/{}".format(FILE_NAME))
 
 
 if args.binary:
     print("Generating Binary files")
-    male,duze = binary_eye.make_binary(pic)
-    binary_eye.save_files(male,duze)
+    male, duze = binary_eye.make_binary(pic)
+    binary_eye.save_files(male, duze)
     exit()
 
 try:
@@ -30,7 +44,7 @@ except Exception as e:
     print(e)
 
 
-male,duze = binary_eye.read_files()
+male, duze = binary_eye.read_files()
 
 circles.show_circles(pic, circles.find_circles(male))
 circles.show_circles(pic, circles.find_circles(duze))

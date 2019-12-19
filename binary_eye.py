@@ -33,5 +33,4 @@ def read_files(name_small="small.png", name_big="big.png"):
     big = cv.cvtColor(big, cv.COLOR_BGR2GRAY)
     small = cv.cvtColor(small, cv.COLOR_BGR2GRAY)
 
-    print(big.shape)
     return small, big
