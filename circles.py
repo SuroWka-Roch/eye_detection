@@ -7,14 +7,14 @@ def show_circles(img, location):
     location list of circles to print to picture
     img: rbg picture of eye
     """
-    cv.circle(img, (location[0], location[1]), location[2], (255, 0, 255), 1)
-    cv.circle(img, (location[0], location[1]), 1, (255, 0, 255), 1)
+    cv.circle(img, (location[0], location[1]), location[2], (135, 0, 40), 1)
+    cv.circle(img, (location[0], location[1]), 1, (60, 190, 160), 1)
 
 
-def find_circles(img, param2=130):
+def find_circles(img, param2=130, min_size=0):
     while True:
         temp = cv.HoughCircles(img, cv.HOUGH_GRADIENT, 1,
-                               10, param1=1, param2=param2)
+                               10, minRadius=min_size, param1=300, param2=param2)
         if temp is not None:
             break
         param2 += -1

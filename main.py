@@ -6,6 +6,7 @@ import os.path
 import circles
 import binary_eye
 
+min_size_divider = 5
 
 print("helllo darknes my old friend.....")
 
@@ -37,14 +38,14 @@ if not os.path.isfile(FILE_NAME):
     else:
         pic = cv.imread("./fig/{}".format(FILE_NAME))
 
-if not os.path.isfile(args.iris) or not os.path.isfile(args.eye):
-    raise(FileNotFoundError)
-
 if args.binary:
     print("Generating Binary files")
     male, duze = binary_eye.make_binary(pic)
     binary_eye.save_files(male, duze)
     exit()
+
+if not os.path.isfile(args.iris) or not os.path.isfile(args.eye):
+    raise(FileNotFoundError)
 
 try:
     binary_eye.read_files()
@@ -54,11 +55,31 @@ except Exception as e:
 
 male, duze = binary_eye.read_files(name_small=args.iris, name_big=args.eye)
 
+#Operacje wygladzajace
+kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (2, 2))
+duze = cv.dilate(duze,kernel,iterations=2)
+male = cv.dilate(male,kernel,iterations=1)
+
+duze = cv.erode(duze,kernel,iterations=5)
+male = cv.erode(male,kernel,iterations=4)
+
+male = cv.dilate(male,kernel,iterations=2)
+
+
 male = circles.fill_holes(male)
 duze = circles.fill_holes(duze)
 
-circles.show_circles(pic, circles.find_circles(male))
-circles.show_circles(pic, circles.find_circles(duze))
+Centrum = {}
+Centrum['male'] = circles.find_circles(male)
+Centrum['duze'] = circles.find_circles(duze,min_size=int(duze.shape[0]/min_size_divider))
+
+circles.show_circles(pic, Centrum['male'] )
+circles.show_circles(pic, Centrum['duze'])
+
+circles.show_circles(male, circles.find_circles(male))
+circles.show_circles(duze, circles.find_circles(duze,min_size=int(duze.shape[0]/min_size_divider)))
+
+print(Centrum['male'])
 
 cv.imshow("lol", pic)
 cv.imshow("lol2", male)
