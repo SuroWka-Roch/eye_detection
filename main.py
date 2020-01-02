@@ -9,7 +9,7 @@ import unwrap
 
 min_size_divider = 5
 
-print("helllo darknes my old friend.....")
+# print("helllo darknes my old friend.....")
 
 
 parser = argparse.ArgumentParser(description='Preprepare the eye biometry')
@@ -75,7 +75,8 @@ Centrum['male'] = circles.find_circles(male)
 Centrum['duze'] = circles.find_circles(
     duze, min_size=int(duze.shape[0]/min_size_divider))
 
-pic_unwrapped = unwrap.unwrap(pic, Centrum['male'], Centrum['duze'])
+pic_unwrapped = unwrap.unwrap(pic, Centrum['male'], Centrum['duze'], duze,remove_unnedeed=False)
+pic_unwrapped_removed_unnneded = unwrap.unwrap(pic, Centrum['male'], Centrum['duze'], duze)
 
 circles.show_circles(pic, Centrum['male'])
 circles.show_circles(pic, Centrum['duze'])
@@ -93,3 +94,9 @@ cv.waitKey()
 
 cv.imwrite(args.output, pic)
 cv.imwrite(args.output, pic_unwrapped)
+cv.imwrite("./output/male.png", male)
+cv.imwrite("./output/duze.png", duze)
+cv.imwrite("./output/unnneded.png", pic_unwrapped_removed_unnneded)
+
+
+
