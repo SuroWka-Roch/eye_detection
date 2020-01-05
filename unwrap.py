@@ -32,7 +32,6 @@ def hight_of_wrap(centrum1, centrum2):
 
     return abs(int(hight_of_wrap_value))
 
-
 def unwrap(pic, centrum1, centrum2,picture_to_include,remove_unnedeed = True):
     """Centrum 2 is the circle of the whole eye"""
     if centrum1[RADIUS] > centrum2[RADIUS]:

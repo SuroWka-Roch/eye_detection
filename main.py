@@ -93,7 +93,7 @@ cv.imshow("final_unwraped", pic_unwrapped)
 cv.waitKey()
 
 cv.imwrite(args.output, pic)
-cv.imwrite(args.output, pic_unwrapped)
+cv.imwrite("./output/unwraped.png", pic_unwrapped)
 cv.imwrite("./output/male.png", male)
 cv.imwrite("./output/duze.png", duze)
 cv.imwrite("./output/unnneded.png", pic_unwrapped_removed_unnneded)
